@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Загрузка...</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: #f9f9f9;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #0078d4;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        h1 { margin: 0; color: #0078d4; font-size: 2.5rem; }
+        .support-years { font-weight: bold; color: #666; margin-bottom: 20px; display: block; }
+        .win-logo { max-height: 80px; width: auto; }
+        .main-screen { width: 100%; border-radius: 10px; margin-top: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .features { background: #f0f7ff; padding: 20px; border-radius: 10px; border-left: 5px solid #0078d4; }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-link">← Назад к списку</a>
+
+    <div class="container" id="content">
+        <div class="header-flex">
+            <div>
+                <h1 id="winTitle">Система не найдена</h1>
+                <span class="support-years" id="winYears"></span>
+            </div>
+            <img src="" id="winLogo" class="win-logo">
+        </div>
+
+        <div class="features">
+            <strong>Что нового:</strong>
+            <div id="winFeatures"></div>
+        </div>
+
+        <div id="winFullDesc" style="margin-top: 20px;"></div>
+
+        <img src="" id="winScreen" class="main-screen">
+    </div>
+
+<script>
+	const database = {
+
+		// --- КОМПЬЮТЕРНЫЕ ВЕРСИИ ---
+
+		"msdos": {
+			title: "MS-DOS",
+			years: "1981 – 2000",
+			logo: "img/logo/0.png",
+			screen: "img/msdos.png",
+			features: "CLI, работа через команды, файловая система FAT, запуск программ вручную.",
+			desc: "Операционная система без графики. Основа всех ранних ПК и первых версий Windows."
+		},
+
+		"win1": {
+			title: "Windows 1.0",
+			years: "1985 – 2001",
+			logo: "img/logo/1.jpg",
+			screen: "img/win1.jpg",
+			features: "Первый GUI, окна без перекрытия, Paint, Notepad.",
+			desc: "Первая графическая оболочка Microsoft поверх MS-DOS."
+		},
+
+		"win2": {
+			title: "Windows 2.0",
+			years: "1987 – 2001",
+			logo: "img/logo/1.jpg",
+			screen: "img/win2.png",
+			features: "Перекрывающиеся окна, горячие клавиши, поддержка 286/386.",
+			desc: "Стала платформой для первых версий Word и Excel."
+		},
+
+		"win3": {
+			title: "Windows 3.x",
+			years: "1990 – 2001",
+			logo: "img/logo/2.jpg",
+			screen: "img/win3.png",
+			features: "Program Manager, улучшенная графика, многозадачность.",
+			desc: "Первая массово популярная версия Windows."
+		},
+
+		"winnt31": {
+			title: "Windows NT 3.1",
+			years: "1993 – 2001",
+			logo: "img/logo/2.jpg",
+			screen: "img/nt31.png",
+			features: "NT ядро, безопасность, многопользовательская система.",
+			desc: "Начало профессиональной линии Windows NT."
+		},
+
+		"winnt35": {
+			title: "Windows NT 3.5",
+			years: "1994 – 2001",
+			logo: "img/logo/2.jpg",
+			screen: "img/nt35.png",
+			features: "Улучшенная производительность, сеть.",
+			desc: "Оптимизированная версия NT 3.1."
+		},
+
+		"winnt351": {
+			title: "Windows NT 3.51",
+			years: "1995 – 2001",
+			logo: "img/logo/2.jpg",
+			screen: "img/nt351.png",
+			features: "Поддержка Windows 95 API.",
+			desc: "Переходная версия перед NT 4.0."
+		},
+
+		"win95": {
+			title: "Windows 95",
+			years: "1995 – 2001",
+			logo: "img/logo/3.jpg",
+			screen: "img/win95.png",
+			features: "Пуск, панель задач, Plug & Play.",
+			desc: "Революционная версия с привычным интерфейсом."
+		},
+
+		"winnt40": {
+			title: "Windows NT 4.0",
+			years: "1996 – 2004",
+			logo: "img/logo/3.jpg",
+			screen: "img/nt40.png",
+			features: "Интерфейс Windows 95 + NT ядро.",
+			desc: "Объединила стабильность NT и удобство 95."
+		},
+
+		"win98": {
+			title: "Windows 98",
+			years: "1998 – 2006",
+			logo: "img/logo/3.jpg",
+			screen: "img/win98.png",
+			features: "USB поддержка, Internet Explorer, улучшенный GUI.",
+			desc: "Популярная домашняя система конца 90-х."
+		},
+
+		"winme": {
+			title: "Windows ME",
+			years: "2000 – 2006",
+			logo: "img/logo/4.jpg",
+			screen: "img/winme.png",
+			features: "System Restore, мультимедиа.",
+			desc: "Последняя DOS-базированная Windows (неудачная)."
+		},
+
+		"win2000": {
+			title: "Windows 2000",
+			years: "2000 – 2010",
+			logo: "img/logo/5.jpg",
+			screen: "img/win2000.png",
+			features: "NT ядро, стабильность, Active Directory.",
+			desc: "Надёжная система для бизнеса."
+		},
+
+		"winxp": {
+			title: "Windows XP",
+			years: "2001 – 2014",
+			logo: "img/logo/6.jpg",
+			screen: "img/winxp.png",
+			features: "Новый дизайн, стабильность, драйверы.",
+			desc: "Одна из самых популярных Windows."
+		},
+
+		"winvista": {
+			title: "Windows Vista",
+			years: "2006 – 2017",
+			logo: "img/logo/7.jpg",
+			screen: "img/vista.png",
+			features: "Aero, UAC, новый интерфейс.",
+			desc: "Красивая, но тяжёлая система."
+		},
+
+		"win7": {
+			title: "Windows 7",
+			years: "2009 – 2020",
+			logo: "img/logo/7.jpg",
+			screen: "img/win7.png",
+			features: "Скорость, Aero, улучшенная панель задач.",
+			desc: "Исправила ошибки Vista и стала хитом."
+		},
+
+		"win8": {
+			title: "Windows 8",
+			years: "2012 – 2016",
+			logo: "img/logo/8.jpg",
+			screen: "img/win8.png",
+			features: "Metro UI, плитки, сенсор.",
+			desc: "Сильный уклон в сторону планшетов."
+		},
+
+		"win81": {
+			title: "Windows 8.1",
+			years: "2013 – 2023",
+			logo: "img/logo/8.jpg",
+			screen: "img/win81.png",
+			features: "Возврат кнопки Пуск, улучшения UI.",
+			desc: "Исправленная версия Windows 8."
+		},
+
+		"win10": {
+			title: "Windows 10",
+			years: "2015 – 2025",
+			logo: "img/logo/9.jpg",
+			screen: "img/win10.png",
+			features: "Обновления, DirectX 12, универсальные приложения.",
+			desc: "Единая система для всех устройств."
+		},
+
+		"win11": {
+			title: "Windows 11",
+			years: "2021 – настоящее время",
+			logo: "img/logo/10.jpg",
+			screen: "img/win11.png",
+			features: "Новый дизайн, центрированное меню Пуск.",
+			desc: "Современная версия с упором на дизайн."
+		},
+
+
+		// --- СЕРВЕРЫ ---
+
+		"srv_2000": {
+			title: "Windows 2000 Server",
+			years: "2000 – 2010",
+			logo: "img/logo/5.jpg",
+			screen: "img/srv2000.png",
+			features: "Active Directory, NTFS, безопасность.",
+			desc: "Основа корпоративных сетей."
+		},
+
+		"srv_2003": {
+			title: "Windows Server 2003",
+			years: "2003 – 2015",
+			logo: "img/logo/6.jpg",
+			screen: "img/srv2003.png",
+			features: "IIS, .NET, роли сервера.",
+			desc: "Очень стабильная серверная система."
+		},
+
+		"srv_2003r2": {
+			title: "Windows Server 2003 R2",
+			years: "2005 – 2015",
+			logo: "img/logo/6_2.jpg",
+			screen: "img/srv2003r2.png",
+			features: "Улучшенные инструменты управления.",
+			desc: "Обновление Server 2003."
+		},
+
+		"srv_2008": {
+			title: "Windows Server 2008",
+			years: "2008 – 2020",
+			logo: "img/logo/6_2.jpg",
+			screen: "img/srv2008.png",
+			features: "Hyper-V, безопасность.",
+			desc: "Новый уровень серверных технологий."
+		},
+
+		"srv_2008r2": {
+			title: "Windows Server 2008 R2",
+			years: "2009 – 2020",
+			logo: "img/logo/6_2.jpg",
+			screen: "img/srv2008r2.png",
+			features: "64-bit only, улучшения производительности.",
+			desc: "Популярная серверная версия."
+		},
+
+		"srv_2012": {
+			title: "Windows Server 2012",
+			years: "2012 – 2023",
+			logo: "img/logo/8.jpg",
+			screen: "img/srv2012.png",
+			features: "Metro UI, облако.",
+			desc: "Фокус на облачных технологиях."
+		},
+
+		"srv_2012r2": {
+			title: "Windows Server 2012 R2",
+			years: "2013 – 2023",
+			logo: "img/logo/8_2.jpg",
+			screen: "img/srv2012r2.png",
+			features: "Улучшения Hyper-V.",
+			desc: "Оптимизация Server 2012."
+		},
+
+		"srv_2016": {
+			title: "Windows Server 2016",
+			years: "2016 – настоящее время",
+			logo: "img/logo/8_2.jpg",
+			screen: "img/srv2016.png",
+			features: "Контейнеры, безопасность.",
+			desc: "Современная серверная платформа."
+		},
+
+		"srv_2019": {
+			title: "Windows Server 2019",
+			years: "2018 – настоящее время",
+			logo: "img/logo/8_2.jpg",
+			screen: "img/srv2019.png",
+			features: "Гибридное облако.",
+			desc: "Продолжение развития Server 2016."
+		},
+
+		"srv_2022": {
+			title: "Windows Server 2022",
+			years: "2021 – настоящее время",
+			logo: "img/logo/8_2.jpg",
+			screen: "img/srv2022.png",
+			features: "Безопасность, Azure интеграция.",
+			desc: "Самая новая серверная версия."
+		}
+
+	};
+
+		const urlParams = new URLSearchParams(window.location.search);
+		const systemId = urlParams.get('sys'); 
+
+		const data = database[systemId];
+
+		if (data) {
+			document.getElementById('pageTitle').innerText = data.title;
+            document.getElementById('winTitle').innerText = data.title;
+            document.getElementById('winYears').innerText = "Годы поддержки: " + data.years;
+            document.getElementById('winFeatures').innerHTML = data.features;
+            document.getElementById('winFullDesc').innerHTML = data.desc;
+            document.getElementById('winLogo').src = data.logo;
+            document.getElementById('winScreen').src = data.screen;
+        } else {
+            document.getElementById('content').innerHTML = "<h1>Ошибка 404</h1><p>Информация о системе не найдена.</p>";
+        }
+    </script>
+</body>
+</html>
